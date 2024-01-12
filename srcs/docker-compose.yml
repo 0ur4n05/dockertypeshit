@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  ngnix:
+    build: ./requirements/ngnix
+    ports:
+      - "443:443"
+    restart : on-failure
+    # volumes : 
+      # - wp:/var/www/html/
+  mariadb:
+    build: ./requirements/mariadb
+    ports:
+      - "3306:3306"
+    volumes:
+      - sqldb:/var/lib/mysql
+    restart : on-failure
+  # wordpress :
+  #   build : ./requirements/wordpress
+  #   restart : on-failure
+  #   volumes : 
+  #     - wp : /var/www/html/
+
+volumes :
+  sqldb:
+    driver: local
+    driver_opts:
+      device: /tmp
+      type: none
+      o: bind
+  # wp:
+  #   driver: local
+  #   driver_opts:
+  #     type: none
+  #     device : /root/data/wp
+  #     o: bind
+
