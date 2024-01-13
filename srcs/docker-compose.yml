@@ -6,32 +6,48 @@ services:
     ports:
       - "443:443"
     restart : on-failure
-    # volumes : 
-      # - wp:/var/www/html/
+    volumes : 
+      - wp:/var/www/html/
+    depends_on:
+      - mariadb
+    networks:
+      - inc-network
   mariadb:
-    build: ./requirements/mariadb
+    build : ./requirements/mariadb
     ports:
       - "3306:3306"
-    volumes:
-      - sqldb:/var/lib/mysql
+    env_file:
+      ./.env
     restart : on-failure
-  # wordpress :
-  #   build : ./requirements/wordpress
-  #   restart : on-failure
-  #   volumes : 
-  #     - wp : /var/www/html/
+    volumes :
+      - db:/var/lib/mysql
+    networks:
+      - inc-network
+  wordpress :
+    build : ./requirements/wordpress
+    restart : on-failure
+    volumes : 
+      - wp:/var/www/html/
+    depends_on:
+      - mariadb
+      - ngnix
+    networks:
+      - inc-network
 
 volumes :
-  sqldb:
+  db :
     driver: local
     driver_opts:
-      device: /tmp
       type: none
       o: bind
-  # wp:
-  #   driver: local
-  #   driver_opts:
-  #     type: none
-  #     device : /root/data/wp
-  #     o: bind
+      device: ~/data/db
+  wp :
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ~/data/wp
 
+networks:
+    inc-network:
+        driver: bridge

@@ -2,12 +2,12 @@
 
 createvolumes () {
 	echo "[+] = creating"
-	# mkdir -p /home/root/data/db /home/root/data/wp
+	mkdir -p ~/data/db ~/data/wp
 }
 
 deletevolumes (){
 	echo "[+] = cleaning"
-	# rm -rf /home/root/data/db /home/root/data/wp
+	rm -rf ~/data/db ~/data/wp
 }
 
 if [ "$1" == "clean" ]
