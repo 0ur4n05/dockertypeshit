@@ -1,4 +1,4 @@
-FROM debian
+FROM debian:bullseye
 
 # init dependencies
 RUN apt update
@@ -14,7 +14,7 @@ RUN nginx -v
 # generating the openssl keys 
 WORKDIR /etc/nginx/certs
            #self siging  # algo type    # no pass      # cert key   # certificate
-RUN openssl req -x509 -newkey rsa:2048 -noenc -keyout cert.key -out cert.csr \
+RUN openssl req -x509 -newkey rsa:2048 -nodes -keyout cert.key -out cert.csr \
 	-subj "/C=AT/ST=sbania/L=derbdban/O=lhorbax/CN=tnaflix.com"
 
 # configuring tls

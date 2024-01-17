@@ -1,27 +1,18 @@
-FROM debian
+FROM debian:bullseye
 
 # installing mariadb
 RUN apt update
 RUN apt install mariadb-server -y
 
-RUN useradd lmongol
-RUN chown -R lmongol:lmongol /var/lib/mysql
-
-# creating socket directory
-RUN mkdir /run/mysqld
-RUN chown -R lmongol:lmongol /run/mysqld
+RUN useradd mysqld
 
 VOLUME /var/lib/mysql
 EXPOSE 3306
 
-
 WORKDIR /tmp
 
-COPY tools/dbinit .
-RUN chown lmongol:lmongol dbinit
+COPY tools/* .
 
-# RUN env > /tmp/z
-# RUN bash -c 'eval "echo \"$(</tmp/dbinit)\""' > /tmp/dbinitx
-USER lmongol
+RUN chmod +x setup.sh
 
-ENTRYPOINT ["mysqld", "--init-file=/tmp/dbinit", "--bind-address=0.0.0.0"]
+ENTRYPOINT ["./setup.sh"]

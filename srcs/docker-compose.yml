@@ -1,38 +1,57 @@
 version: "3.8"
 
 services:
-  ngnix:
-    build: ./requirements/ngnix
-    ports:
-      - "443:443"
-    restart : on-failure
-    volumes : 
-      - wp:/var/www/html/
-    depends_on:
-      - mariadb
-    networks:
-      - inc-network
   mariadb:
     build : ./requirements/mariadb
     ports:
       - "3306:3306"
-    env_file:
-      ./.env
-    restart : on-failure
+    restart : always
+    networks:
+      - inc-network
     volumes :
       - db:/var/lib/mysql
-    networks:
-      - inc-network
+    env_file:
+      ./.env
   wordpress :
     build : ./requirements/wordpress
-    restart : on-failure
+    restart : always
     volumes : 
       - wp:/var/www/html/
-    depends_on:
-      - mariadb
-      - ngnix
     networks:
       - inc-network
+    depends_on:
+      - mariadb
+    env_file:
+      ./.env
+    ports:
+      - "9000:9000"
+  ngnix:
+    build: ./requirements/ngnix
+    ports:
+      - "443:443"
+    restart : always
+    volumes : 
+      - wp:/var/www/html
+    depends_on:
+      - mariadb
+    networks:
+      - inc-network
+  ctfchallenge:
+    build: ./requirements/bonus/ctfchallenge/
+    ports:
+      - "1337:1337"
+    restart : always
+  portfolio:
+    build: ./requirements/bonus/portfolio/
+    ports:
+      - "6969:6969"
+    restart : always
+  ftp:
+    build: ./requirements/bonus/ftp/
+    ports:
+      - "20:20"
+      - "21:21"
+    restart : always
 
 volumes :
   db :

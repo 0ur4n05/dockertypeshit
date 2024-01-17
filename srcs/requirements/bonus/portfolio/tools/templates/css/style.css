@@ -1,0 +1,104 @@
+@font-face {
+    font-family: "GochiHand";
+    src: url("/GochiHand-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Raleway";
+    src: url("/Raleway-VariableFont_wght.ttf") format("truetype");
+}
+
+* {
+    font-family: "Raleway";
+}
+
+a {
+    color: #e979ff;
+}
+
+a:hover {
+    color: #e979ff;
+}
+
+#background-video {
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: -1;
+    filter: brightness(30%);
+}
+
+#title {
+    margin-top: 38vh;
+    text-align: center;
+}
+
+#title h1 {
+    color: white;
+    font-weight: bold;
+    font-size: 5rem;
+    font-family: "GochiHand";
+    margin-bottom: 0.5rem;
+}
+
+#title h4 {
+    color: white;
+    font-family: "GochiHand";
+    font-size: 1.5rem;
+}
+
+#links {
+    color: white;
+}
+
+#members-backlink {
+    margin-top: 1.5vh;
+    text-align: center;
+}
+
+#members-title {
+    margin-top: 4vh;
+    color: white;
+    text-align: center;
+}
+
+#members {
+    margin-top: 4vh;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#members img {
+    width: 75px;
+    border-radius: 75px;
+}
+
+#members th {
+    color: white;
+    font-weight: normal;
+    border-top: 1px solid #fff3;
+    border-bottom: 1px solid #fff3;
+    padding: 15px 5px;
+}
+
+#members tr > th:first-child {
+    padding-right: 15px;
+}
+
+#members mark {
+    padding: 3px 6px;
+    background: #e979ff;
+}
+
+#members .name {
+    padding-bottom: 8px;
+}
+
+#members .skills {
+    padding-bottom: 8px;
+}

@@ -1,26 +1,25 @@
-FROM debian
+FROM debian:bullseye
+## TODO : check wp-cli
+
+VOLUME /var/www/html
 
 RUN apt update
 
 # installing wordpress dependencies
-RUN  apt install php7.4-fpm php7.4-common php7.4-mysql \
-	php7.4-xml php7.4-xmlrpc php7.4-curl php7.4-gd \
-	php7.4-imagick php7.4-cli php7.4-dev  \
-	php7.4-mbstring php7.4-opcache  \
-	php7.4-soap php7.4-zip -y
+RUN apt install php php-curl php-fpm php-bcmath php-gd php-soap php-zip php-curl php-mbstring php-mysqlnd php-gd php-xml php-intl php-zip curl wget -y
+#
+# # downloading wordpress files
+WORKDIR /var/www/html/
 
-# downloading wordpress files
-WORKDIR /var/www/html/wp
+RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+RUN chmod +x wp-cli.phar
+RUN mv wp-cli.phar /usr/local/bin/wp
 
-RUN wget https://wordpress.org/latest.tar.gz
-RUN tar -zxvf latest.tar.gz
-RUN mv wordpress/* .
-RUN rm -rf wordpress 
+RUN chown -R www-data:www-data /var/www/html
+COPY tools/* .
 
-# chaning premissions
-RUN chown -R www-data:www-data *
-RUN chmod -R 755 *
+RUN chmod +x setup.sh
+USER www-data
+RUN wp core download
 
-RUN cp wp-config-sample.php wp-config.php
-
-CMD ["sleep", "infinity"]
+CMD ["./setup.sh"]
