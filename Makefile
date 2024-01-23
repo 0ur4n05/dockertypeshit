@@ -6,7 +6,7 @@
 #    By: lhorbax </var/spool/mail/lhorbax>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 21:04:41 by lhorbax           #+#    #+#              #
-#    Updated: 2024/01/23 22:42:56 by mlalama          ###   ########.fr        #
+#    Updated: 2024/01/23 22:47:04 by mlalama          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,6 @@ clean :
 	echo y | docker buildx prune
 
 fclean : clean
-	docker volume rm $(docker volume ls -q) --force
 	echo y | docker system prune -a
 
 re : fclean all
