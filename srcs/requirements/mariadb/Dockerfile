@@ -7,7 +7,7 @@ RUN apt install mariadb-server -y
 RUN useradd mysqld
 
 VOLUME /var/lib/mysql
-EXPOSE 3306
+# EXPOSE 3306
 
 WORKDIR /tmp
 

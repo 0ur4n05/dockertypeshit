@@ -6,7 +6,7 @@
 #    By: lhorbax </var/spool/mail/lhorbax>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 21:04:41 by lhorbax           #+#    #+#              #
-#    Updated: 2024/01/13 07:26:09 by lhorbax          ###   ########.fr        #
+#    Updated: 2024/01/22 19:05:23 by lhorbax          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,9 +16,8 @@ CREATEVOL=/bin/sh ./srcs/requirements/tools/volumes.sh
 all :
 	# docker stop $$(docker ps -a -q)
 	# docker rmi --force $$(docker images -a -q)
-	$(CREATEVOL) clean
 	$(CREATEVOL) setup
-	docker compose $(DOCKERCMF) up -d 
+	docker compose $(DOCKERCMF) up -d --build
 
 clean :
 	$(CREATEVOL) clean

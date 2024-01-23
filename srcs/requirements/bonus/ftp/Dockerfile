@@ -3,20 +3,19 @@ FROM debian:bullseye
 RUN apt update 
 RUN apt install vsftpd -y
 
-RUN (echo "bGlzdGVuPVlFUwpsaXN0ZW5faXB2Nj1OTwpjb25uZWN0X2Zyb21fcG9ydF8yMD1ZRVMKYW5vbnltb3VzX2VuYWJsZT1ZRVMKbG9jYWxfZW5hYmxlPVlFUwp3cml0ZV9lbmFibGU9WUVTCmNocm9vdF9sb2NhbF91c2VyPVlFUwphbGxvd193cml0ZWFibGVfY2hyb290PVlFUwpzZWN1cmVfY2hyb290X2Rpcj0vdmFyL3J1bi92c2Z0cGQvZW1wdHkKcGFtX3NlcnZpY2VfbmFtZT12c2Z0cGQKcGFzdl9lbmFibGU9WUVTCnBhc3ZfbWluX3BvcnQ9NDAwMDAKcGFzdl9tYXhfcG9ydD00NTAwMAp1c2VybGlzdF9lbmFibGU9WUVTCnVzZXJsaXN0X2ZpbGU9L2V0Yy92c2Z0cGQudXNlcmxpc3QKdXNlcmxpc3RfZGVueT1OTwpzZWN1cmVfY2hyb290X2Rpcj0vaG9tZS9sbW9uZ29s" | base64 -d) > /etc/vsftpd.conf
+RUN (echo "bGlzdGVuPVlFUwphbm9ueW1vdXNfZW5hYmxlPVlFUwpsb2NhbF9lbmFibGU9WUVTCndyaXRlX2VuYWJsZT1ZRVMKYWxsb3dfd3JpdGVhYmxlX2Nocm9vdD1ZRVMKcGFtX3NlcnZpY2VfbmFtZT12c2Z0cGQKcGFzdl9lbmFibGU9WUVTCmxvY2FsX2VuYWJsZT1ZRVMKcGFzdl9taW5fcG9ydD00MDAwMApwYXN2X21heF9wb3J0PTQwMTAwCnBhc3ZfYWRkcl9yZXNvbHZlPVlFUwpwb3J0X3Byb21pc2N1b3VzPVlFUwp1c2VybGlzdF9lbmFibGU9WUVTCnVzZXJsaXN0X2Rlbnk9Tk8KdXNlcmxpc3RfZmlsZT0vZXRjL3ZzZnRwZC51c2VybGlzdApsaXN0ZW5fYWRkcmVzcz0wLjAuMC4wCnNlY3VyZV9jaHJvb3RfZGlyPS92YXIvcnVuL3ZzZnRwZC9lbXB0eQpsb2NhbF9yb290PS92YXIvd3d3L2h0bWwKeGZlcmxvZ19lbmFibGU9WUVTCnZzZnRwZF9sb2dfZmlsZT0vdmFyL2xvZy92c2Z0cGQubG9nCmxvZ19mdHBfcHJvdG9jb2w9bm8=" | base64 -d) > /etc/vsftpd.conf
 
-RUN adduser lmongol
-
-# RUN echo "lmongol:${FTPPASWD}" | chpasswd
-RUN echo "lmongol:khtek" | chpasswd
-RUN echo "flag{hrelia}" > /home/lmongol/flag.txt
+RUN mkdir /home/lmongol
+RUN useradd --home /home/lmongol lmongol
+RUN mkdir -p /var/run/vsftpd/empty
 
 RUN echo "lmongol" | tee -a /etc/vsftpd.userlist
+
+WORKDIR /tmp
+COPY tools/setup.sh .
+RUN chmod +x setup.sh
 
 EXPOSE 20
 EXPOSE 21
 
-RUN mkdir -p /home/lmongol
-RUN chown -R lmongol:lmongol /home/lmongol
-
-CMD ["vsftpd"]
+CMD ["./setup.sh"]

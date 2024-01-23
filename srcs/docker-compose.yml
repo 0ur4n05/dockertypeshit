@@ -3,8 +3,8 @@ version: "3.8"
 services:
   mariadb:
     build : ./requirements/mariadb
-    ports:
-      - "3306:3306"
+    # ports:
+    #   - "3306:3306"
     restart : always
     networks:
       - inc-network
@@ -21,11 +21,11 @@ services:
       - inc-network
     depends_on:
       - mariadb
+    # ports:
+    #   - "9000:9000"
     env_file:
       ./.env
-    ports:
-      - "9000:9000"
-  ngnix:
+  nginx:
     build: ./requirements/ngnix
     ports:
       - "443:443"
@@ -33,9 +33,27 @@ services:
     volumes : 
       - wp:/var/www/html
     depends_on:
-      - mariadb
+      - wordpress
     networks:
       - inc-network
+  redis :
+    build : ./requirements/bonus/redis/
+    restart : always
+    # ports :
+    #   - "6379:6379"
+    depends_on:
+      - wordpress
+    networks:
+      - inc-network
+  adminer :
+    build : ./requirements/bonus/adminer
+    restart : always
+    volumes : 
+      - wp:/var/www/html/
+    networks:
+      - inc-network
+    depends_on:
+      - wordpress
   ctfchallenge:
     build: ./requirements/bonus/ctfchallenge/
     ports:
@@ -51,7 +69,16 @@ services:
     ports:
       - "20:20"
       - "21:21"
+      - "40000-40100:40000-40100"
     restart : always
+    volumes : 
+      - wp:/var/www/html/
+    networks:
+      - inc-network
+    depends_on:
+      - wordpress
+    env_file:
+      ./.env
 
 volumes :
   db :

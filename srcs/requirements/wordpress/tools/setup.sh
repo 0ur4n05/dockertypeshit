@@ -1,14 +1,20 @@
-#!/bin/sh
+#!/bin/bash
 
-sed -i "s/database_name_here/${DBNAME}/g" wp-config.php
-sed -i "s/username_here/${ADMINUSRNAME}/g" wp-config.php
-sed -i "s/password_here/${ADMINPASS}/g" wp-config.php
-sed -i "s/localhost/mariadb/g" wp-config.php
+# configuring the pool
+sed -i 's/listen = \/run\/php\/php7.4-fpm.sock/listen = 9000/g' /etc/php/7.4/fpm/pool.d/www.conf
 
-curl https://api.wordpress.org/secret-key/1.1/salt/ >> wp-config.php
-# wp config create --dbname=${DBNAME} --dbuser=${ADMINUSRNAME} --dbpass=${ADMINPASS} --dbhost=mariadb 
+wp core download --allow-root
+wp config create --dbname=${DBNAME} --dbuser=${ADMINUSRNAME} --dbpass=${ADMINPASS} --dbhost=mariadb --allow-root
+wp core install --url=localhost --title="lmongol" --admin_user=${WPUSR} --admin_password=${WPPASS} --admin_email=${WPMAIL} --allow-root
 
-php -S  0.0.0.0:9000
+## fuck me 
+(echo "PD8gcGhwCnBocGluZm8oKTsKPz4=" | base64) > meme.php
 
-wp core install --url=localhost --title="lmongol" --admin_user=${WPUSR} --admin_password=${WPPASS} --admin_email=${WPMAIL}
+wp config set WP_REDIS_HOST redis --allow-root
+wp config set WP_REDIS_PORT 6379 --allow-root
+wp plugin install redis-cache --activate --allow-root
+wp plugin update --all --allow-root
+wp redis enable --allow-root
 
+mkdir -p /run/php
+/usr/sbin/php-fpm7.4 -F
