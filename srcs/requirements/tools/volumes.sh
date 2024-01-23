@@ -1,13 +1,13 @@
-#!/bin/sh
+#!/bin/bash
 
 createvolumes () {
 	echo "[+] = creating"
-	mkdir -p ~/data/db ~/data/wp
+	mkdir -p /home/mlalama/data/db /home/mlalama/data/wp
 }
 
 deletevolumes (){
 	echo "[+] = cleaning"
-	rm -rf ~/data/db ~/data/wp
+	rm -rf /home/mlalama/data/db /home/mlalama/data/wp
 }
 
 if [ "$1" == "clean" ]
