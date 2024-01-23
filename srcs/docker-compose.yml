@@ -86,13 +86,13 @@ volumes :
     driver_opts:
       type: none
       o: bind
-      device: ~/data/db
+      device: /home/mlalama/data/db
   wp :
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: ~/data/wp
+      device: /home/mlalama/data/wp
 
 networks:
     inc-network:
