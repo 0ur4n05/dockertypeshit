@@ -16,7 +16,7 @@ RUN chmod +x wp-cli.phar
 RUN mv wp-cli.phar /usr/local/bin/wp
 
 COPY tools/setup.sh .
-# EXPOSE 9000
+EXPOSE 9000
 
 RUN chmod +x setup.sh
 
